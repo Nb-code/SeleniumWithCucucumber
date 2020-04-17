@@ -47,7 +47,6 @@ public class Main {
         interceptNetwork(chromeDevTools);
 
         //Inspect Detached network
-        inspectDetached(chromeDevTools);
 
         //Console Log
         String message = "From ExecuteAutomation";
@@ -58,7 +57,6 @@ public class Main {
         chromeDriver.get("https://amazon.in");
 
     }
-
 
     /**
      * Enable Network Offline
@@ -72,7 +70,6 @@ public class Main {
 
         devTools.addListener(loadingFailed(), loadingFailed -> assertEquals(loadingFailed.getErrorText(), "net::ERR_INTERNET_DISCONNECTED"));
     }
-
     /**
      * Enable Network Online
      * @param devTools
@@ -84,8 +81,6 @@ public class Main {
                 Optional.of(ConnectionType.cellular4g)));
 
     }
-
-
     /**
      * Intercept Network
      * @param chromeDevTools
@@ -109,14 +104,12 @@ public class Main {
 
         });
     }
-
     /**
      * Inspect Detached Network
      * @param devTools
      */
     private static void inspectDetached(DevTools devTools) {
         devTools.addListener(detached(), Assert::assertNotNull);
-        devTools.send(Inspector.enable());
         Set<TargetInfo> targetInfos = devTools.send(Target.getTargets());
         targetInfos.forEach(
                 targetInfo -> {
@@ -129,8 +122,6 @@ public class Main {
                 });
         devTools.send(Inspector.disable());
     }
-
-
     /**
      * Get Console Logs
      * @param chromeDevTools
