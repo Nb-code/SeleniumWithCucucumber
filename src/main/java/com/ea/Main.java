@@ -47,7 +47,6 @@ public class Main {
         interceptNetwork(chromeDevTools);
 
         //Inspect Detached network
-
         //Console Log
         String message = "From ExecuteAutomation";
         consoleLogs(chromeDevTools, message);
@@ -57,7 +56,6 @@ public class Main {
         chromeDriver.get("https://amazon.in");
 
     }
-
     /**
      * Enable Network Offline
      * @param devTools
@@ -68,7 +66,7 @@ public class Main {
         devTools.send(emulateNetworkConditions(true, 100, 1000, 2000,
                 Optional.of(ConnectionType.cellular3g)));
 
-        devTools.addListener(loadingFailed(), loadingFailed -> assertEquals(loadingFailed.getErrorText(), "net::ERR_INTERNET_DISCONNECTED"));
+       // devTools.addListener(loadingFailed(), loadingFailed -> assertEquals(loadingFailed.getErrorText(), "net::ERR_INTERNET_DISCONNECTED"));
     }
     /**
      * Enable Network Online
