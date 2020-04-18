@@ -31,9 +31,9 @@ public class Main {
 
         //Selenium 4
         System.setProperty("webdriver.chrome.driver", "/Users/karthikkk/ChromeDriver/chromedriver");
-        chromeDriver = new ChromeDriver();
+        var chromeDriver = new ChromeDriver();
 
-        File chromeDevTools = chromeDriver.getDevTools();
+        var chromeDevTools = chromeDriver.getDevTools();
         //Session of ChromeDevTool
         chromeDevTools.createSession();
 
@@ -47,6 +47,8 @@ public class Main {
         interceptNetwork(chromeDevTools);
 
         //Inspect Detached network
+        inspectDetached(chromeDevTools);
+
         //Console Log
         String message = "From ExecuteAutomation";
         consoleLogs(chromeDevTools, message);
@@ -56,6 +58,8 @@ public class Main {
         chromeDriver.get("https://amazon.in");
 
     }
+
+
     /**
      * Enable Network Offline
      * @param devTools
@@ -66,8 +70,9 @@ public class Main {
         devTools.send(emulateNetworkConditions(true, 100, 1000, 2000,
                 Optional.of(ConnectionType.cellular3g)));
 
-       // devTools.addListener(loadingFailed(), loadingFailed -> assertEquals(loadingFailed.getErrorText(), "net::ERR_INTERNET_DISCONNECTED"));
+        devTools.addListener(loadingFailed(), loadingFailed -> assertEquals(loadingFailed.getErrorText(), "net::ERR_INTERNET_DISCONNECTED"));
     }
+
     /**
      * Enable Network Online
      * @param devTools
@@ -79,6 +84,8 @@ public class Main {
                 Optional.of(ConnectionType.cellular4g)));
 
     }
+
+
     /**
      * Intercept Network
      * @param chromeDevTools
@@ -102,16 +109,18 @@ public class Main {
 
         });
     }
+
     /**
      * Inspect Detached Network
      * @param devTools
      */
     private static void inspectDetached(DevTools devTools) {
         devTools.addListener(detached(), Assert::assertNotNull);
+        devTools.send(Inspector.enable());
         Set<TargetInfo> targetInfos = devTools.send(Target.getTargets());
         targetInfos.forEach(
                 targetInfo -> {
-                    File sessionId = devTools.send(attachToTarget(targetInfo.getTargetId(), Optional.of(false)));
+                    var sessionId = devTools.send(attachToTarget(targetInfo.getTargetId(), Optional.of(false)));
                     devTools.send(
                             Target.sendMessageToTarget(
                                     "{\"method\":\"Page.crash\"}",
@@ -120,6 +129,8 @@ public class Main {
                 });
         devTools.send(Inspector.disable());
     }
+
+
     /**
      * Get Console Logs
      * @param chromeDevTools
@@ -142,7 +153,7 @@ public class Main {
     private static void Selenium4MiscFetures(ChromeDriver chromeDriver){
 
         // New Tab
-        File newTab = chromeDriver.switchTo().newWindow(WindowType.TAB);
+        var newTab = chromeDriver.switchTo().newWindow(WindowType.TAB);
         newTab.get("http://executeautomation.com/demosite/Login.html");
 
         //login
@@ -150,23 +161,23 @@ public class Main {
         newTab.findElement(By.name("Password")).sendKeys("admin");
         newTab.findElement(By.name("Login")).submit();
 
-        File checkbox = chromeDriver.findElement(withTagName("input").below(By.name("Male")).toLeftOf(By.name("Hindi")));
+        var checkbox = chromeDriver.findElement(withTagName("input").below(By.name("Male")).toLeftOf(By.name("Hindi")));
         checkbox.click();
         System.out.println(checkbox.getAttribute("name"));
 
 
-        File txtIntial = chromeDriver.findElement(withTagName("input")
+        var txtIntial = chromeDriver.findElement(withTagName("input")
                 .below(By.id("TitleId"))
                 .above(By.id("FirstName")));
 
         txtIntial.sendKeys("KK");
 
         //list of elements
-        File lstElements = chromeDriver.findElements(withTagName("input")
+        var lstElements = chromeDriver.findElements(withTagName("input")
                 .below(By.xpath("//h2[text()=' User Form ']"))
                 .above(By.name("Save")));
 
-        File elements = lstElements
+        var elements = lstElements
                 .stream()
                 .map(x -> x.getAttribute("input"));
 
