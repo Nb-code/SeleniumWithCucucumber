@@ -17,6 +17,9 @@ import org.openqa.selenium.devtools.target.model.TargetInfo;
 
 import java.util.Optional;
 import java.util.Set;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 import static org.junit.Assert.assertEquals;
 import static org.openqa.selenium.devtools.inspector.Inspector.detached;
